@@ -5,15 +5,16 @@ import os
 from os.path import splitext, basename, join
 
 VIDEO_FILE = sys.argv[1]
-
-directory = splitext(basename(VIDEO_FILE))[0]
-
-OUT_DIR = 'data/{}'.format(directory)
+if len(sys.argv) > 2:
+  FRAME_DIR = sys.argv[2]
+else:
+  directory = splitext(basename(VIDEO_FILE))[0]
+  FRAME_DIR = 'data/{}'.format(directory)
 
 try:
-    os.stat(OUT_DIR)
+    os.stat(FRAME_DIR)
 except:
-    os.mkdir(OUT_DIR)       
+    os.mkdir(FRAME_DIR)       
 
 cap = cv2.VideoCapture(VIDEO_FILE)
 
