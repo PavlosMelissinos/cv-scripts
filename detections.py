@@ -1,14 +1,14 @@
-from collections import namedtuple
 from random import randint
 import numpy as np
 
-def paint_bbox(canvas, bbox):
+def draw_bbox(canvas, bb):
     Bbox = namedtuple('Bbox', ['u','d','l','r'])
-    xy = Bbox(l=int(bb[1]), r=int(bb[1] + bb[3]), u=int(bb[0]), d=int(bb[0] + bb[2]))
-    fill_color = [randint(100, 255), randint(100, 255), randint(100, 255)]
-    print(fill_color)
-    canvas[xy.l, xy.u:xy.d] = np.array(fill_color)  # connect upper left with upper right
-    canvas[xy.l:xy.r, xy.u] = np.array(fill_color)
-    canvas[xy.r, xy.u:xy.d] = np.array(fill_color)
-    canvas[xy.l:xy.r, xy.d] = np.array(fill_color)
+    bb = [int(b) for b in bb]
+    xy = Bbox(u=bb[1], d=bb[1] + bb[3], l=bb[0], r=bb[0] + bb[2])
+    fill_color = [random() for _ in range(3)]
+    fill_color = [int(fc / max(fill_color) * 255) for fc in fill_color]
+    canvas[xy.u, xy.l:xy.r] = fill_color  # upper horizontal
+    canvas[xy.u:xy.d, xy.l] = fill_color  # left vertical
+    canvas[xy.d, xy.l:xy.r] = fill_color  # lower horizontal
+    canvas[xy.u:xy.d, xy.r] = fill_color  # right vertical
     return canvas
